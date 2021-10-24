@@ -76,20 +76,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
-                    {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+                    {android.Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_PERMISSION_REQUEST_CODE);
             return;
         }
+
         mMap.setMyLocationEnabled(true);
         LocationAvailability locationAvailability =
                 LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
         if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
-            // 3
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            // 4
             if (mLastLocation != null) {
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
                         .getLongitude());
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+                //add pin at user's location
+                placeMarkerOnMap(currentLocation);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
             }
         }
     }
@@ -106,6 +107,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(@NonNull Location location) {
 
+    }
+    protected void placeMarkerOnMap(LatLng location) {
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
+
+        String titleStr = getAddress(location);  // add these two lines
+        markerOptions.title(titleStr);
+
+        mMap.addMarker(markerOptions);
     }
 
     @Override
@@ -131,5 +140,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
             mGoogleApiClient.disconnect();
         }
+    }
+    private String getAddress( LatLng latLng ) {
+        // 1
+        Geocoder geocoder = new Geocoder( this );
+        String addressText = "";
+        List<Address> addresses = null;
+        Address address = null;
+        try {
+            // 2
+            addresses = geocoder.getFromLocation( latLng.latitude, latLng.longitude, 1 );
+            // 3
+            if (null != addresses && !addresses.isEmpty()) {
+                address = addresses.get(0);
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                    addressText += (i == 0)?address.getAddressLine(i):("\n" + address.getAddressLine(i));
+                }
+            }
+        } catch (IOException e ) {
+        }
+        return addressText;
     }
 }
