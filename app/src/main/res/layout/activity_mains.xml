@@ -2,6 +2,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:fontFamily="cursive"
+        android:text="Google Map"
+        android:textAlignment="center"
+        android:textColor="#FF9800"
+        android:textSize="40sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:fontFamily="cursive"
+        android:text="Application"
+        android:textAlignment="center"
+        android:textColor="#FF9800"
+        android:textSize="40sp"
+        android:textStyle="bold|italic" />
+
     <Button
         android:id="@+id/start_btn"
         android:layout_width="match_parent"

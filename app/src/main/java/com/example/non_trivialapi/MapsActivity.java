@@ -47,8 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (ActivityCompat.checkSelfPermission(this, mPermission)
                         != getPackageManager().PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(this, new String[]{mPermission}, REQUEST_CODE_PERMISSION);
-                        // If any permission above not allowed by user, this condition will
-                        //  execute every time, else your else part will work
+                        // try permission aboveallowed or not by user
                         }
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -86,12 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         /**
-         * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * If Google Play services is not installed on the device, the user will be prompted to install
-         * it inside the SupportMapFragment. This method will only be triggered once the user has
-         * installed Google Play services and returned to the app.
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
@@ -127,6 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng mylocation = new LatLng(latitude, longitude);
                 mMap.addMarker(new MarkerOptions().position(mylocation).title("current location"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 15));
+                //add a circle around mark
                 Circle circle = mMap.addCircle(new CircleOptions()
                         .center(new LatLng(latitude, longitude))
                         .radius(600)

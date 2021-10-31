@@ -10,6 +10,7 @@ public class MainActivities extends Activity {
 	private Button start_btn;
 	private Button start_btn1;
 	@Override
+	// main interface with two button
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mains);

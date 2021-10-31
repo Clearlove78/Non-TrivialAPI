@@ -34,29 +34,28 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
+    //search palce function
     public void onMapSearch(View view) {
         EditText locationSearch = (EditText) findViewById(R.id.editText);
         String location = locationSearch.getText().toString();
+        Geocoder geocoder = new Geocoder(MainActivity.this);
+        //get text value
         List<Address> addressList = new ArrayList<>();
-
-        if (location != null || !location.equals("")) {
-            Geocoder geocoder = new Geocoder(this);
-            try {
-                addressList = geocoder.getFromLocationName(location, 1);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if(addressList.size() > 0) {
-                Address address = addressList.get(0);
-                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(latLng).title(address.getAddressLine(0)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
-            }
+        try {
+            //search place
+            addressList = geocoder.getFromLocationName(location, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(addressList.size() > 0) {
+            //get address and mark in map
+            Address address = addressList.get(0);
+            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title(address.getAddressLine(0)));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
         }
     }
-
+    //set mark in the map
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
